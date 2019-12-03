@@ -1,0 +1,9 @@
+<launch>
+
+        <arg name="cmd_vel_topic" default="cmd_vel" />
+
+	<node pkg="soccer_maxon" type="soccer_maxon_node" respawn="false" name="soccer_maxon_node" output="screen">
+        <remap from="cmd_vel"     to="$(arg cmd_vel_topic)"/>
+	  </node>
+
+</launch>

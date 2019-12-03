@@ -1,0 +1,8 @@
+<launch>
+
+        <arg name="frame_id" default="laser" />
+	<node pkg="urg_node" type="urg_node" respawn="false" name="urg_node" output="screen">
+        <param name="frame_id" value="$(arg frame_id)" />
+	  </node>
+
+</launch>

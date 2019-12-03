@@ -1,0 +1,42 @@
+<launch>   
+
+  <arg name="robot_name"/>  
+  <arg name="tf_robot"/> 
+
+  <!--- Run base controller 
+  <include file="$(find  multi_robot_test)/launch/base_controller.launch.xml">
+  </include>
+  -->
+  <!--- Run hokuyo -->
+  <include file="$(find  multi_robot_test)/launch/laser.launch.xml">
+  <arg name="frame_id"   value="$(arg tf_robot)/laser"/>
+  </include>
+  
+  <!--- Run laser scan matcher -->
+  <include file="$(find  multi_robot_test)/launch/laser_scan_matcher_agv.launch.xml">
+  <arg name="laser_frame"   value="$(arg tf_robot)/laser"/>
+  <arg name="odom_frame"   value="$(arg tf_robot)/odom"/>
+  <arg name="base_frame"   value="$(arg tf_robot)/base_link"/>
+
+  </include>
+  
+
+  <!--- Run AMCL -->
+  <include file="$(find  multi_robot_test)/launch/amcl_multirobot.launch.xml">
+    <arg name="use_map_topic"             value="true"/>
+    <arg name="global_frame_id" value="/map"/>
+    <arg name="odom_frame_id"   value="$(arg tf_robot)/odom"/>
+    <arg name="base_frame_id"   value="$(arg tf_robot)/base_link"/>
+    
+  </include>
+
+  <!--- Run move base -->
+  <include file="$(find  multi_robot_test)/launch/move_base_multirobot.launch.xml">
+  <arg name="base_local_planner"   value="dwa_local_planner/DWAPlannerROS"/>
+  
+  </include>
+  
+  
+
+  
+</launch>
