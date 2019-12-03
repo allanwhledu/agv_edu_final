@@ -1,4 +1,6 @@
 #!/bin/bash -e
+source devel/setup.bash
+sudo chmod 777 /dev/ttyUSB0
 sleep 2
 roslaunch  agv_tcp_velocity laser.launch&
 sleep 1
@@ -9,16 +11,14 @@ sleep 1
 # roslaunch laser_scan_matcher demo.launch&
 sleep 1
 # roslaunch amcl amcl_omni.launch&
-roslaunch my_laser_matcher my_localize.launch&
+roslaunch agv_tcp_velocity my_localize.launch&
 sleep 1
 roslaunch agv_tcp_velocity move_base.launch&
-sleep 5
-sudo chmod 777 /dev/ttyUSB0
+
 sleep 2
 rosrun soccer_maxon soccer_maxon_node&
 sleep 1
-
-source devel/setup.bash&
+rviz&
 #source /home/agv/dynamic_avoid_person/devel/setup.bash&
 #roslaunch kinova_bringup kinova_robot.launch&
 #sleep 3
@@ -27,4 +27,4 @@ source devel/setup.bash&
 #rosrun avoid_person_node avoid_person_node&
 #sleep 1
 #source /home/agv/agv_ws/devel/setup.bash&
-roslaunch move_forward move_and_avoid_dynamic_object.launch&
+#roslaunch move_forward move_and_avoid_dynamic_object.launch&
