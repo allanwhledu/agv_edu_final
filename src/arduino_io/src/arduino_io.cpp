@@ -68,14 +68,16 @@ int main(int argc, char **argv) {
     return -1;
   }
 
-  ros::init(argc, argv, "ur_ee_server");
+  ros::init(argc, argv, "arduino_io_server");
 
-  ros::Rate loop_rate(10);
   ros::NodeHandle n;
+  ros::Rate loop_rate(10);
 
   ros::Publisher goal_idx_pub =
       n.advertise<std_msgs::Int32>("/goal_idx", 1000);
   std_msgs::Int32 goal_idx_msg;
+
+  state_listener sl(n);
 
   int index = 0;
   int state = 0;
@@ -83,8 +85,10 @@ int main(int argc, char **argv) {
   std::string datastr = "";
   datastr.clear();
   while (ros::ok()) {
+    if (!ser.available()) {
+      ROS_INFO("serial %s", ser.available() ? "available" : "not available");
+    }
     if (serialflag) {
-      ROS_INFO("%s", ser.available() ? "available" : "not available");
       datastr += ser.read(ser.available());
       // ROS_INFO("%s", datastr.data());
 
@@ -95,6 +99,7 @@ int main(int argc, char **argv) {
 // }
 
 // ROS_INFO("success_num_read %d", success_num_read);
+// ROS_INFO("state dtu %d", state);
 
       goal_idx_msg.data = index;
       goal_idx_pub.publish(goal_idx_msg);
@@ -104,7 +109,7 @@ int main(int argc, char **argv) {
     char charSend[50];
     sprintf(charSend, "STATEUTD%dSTATEUTD\n\r", (int) agv_state);
 
-    ROS_INFO("%s", charSend);
+//    ROS_INFO("%s", charSend);
     stringSend = charSend;
     ser.write(stringSend);
 
