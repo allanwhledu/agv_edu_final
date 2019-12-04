@@ -120,7 +120,7 @@ void loop() {
   outString += stringDwonToUp;
   char temp_str[20];
   //outString += itoa((int)myservo.read() * 10 * 1.0, temp_str, 10);  
-  outString += itoa((int) sensorValue, temp_str, 10);
+  outString += itoa((int) agv_state, temp_str, 10);
   //outString += stringDwonToUp;
   outString += stringSucked;
   outString += itoa((int) goal, temp_str, 10);
