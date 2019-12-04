@@ -5,14 +5,11 @@
 
 //ros::NodeHandle  nh;/
 
-Servo myservo;        // 创建一个舵机对象
-int pos = 0;          // 变量pos用来存储舵机位置
-
-int sensorPin = A0;    // select the input pin for the potentiometer
-int outPin = 8;      // select the pin for the LED
+int keyboardPin = A1;    // select the input pin for the potentiometer
+int ledRPin = 8;      // select the pin for the LED
+int ledGPin = 9;      // select the pin for the LED
+int ledBPin = 10;      // select the pin for the LED
 int sensorValue = 0;  // variable to store the value coming from the sensor
-
-float thresholdVoltageValue = 0.8;
 
 int agv_state = 0;
 int goal = 0;
@@ -28,30 +25,81 @@ String outString = stringDwonToUp + inString + stringDwonToUp;
 int sucked = 0;
 bool serialflag = false;
 
+int adc_key_val[5] = {50, 200, 400, 600, 800};
+int NUM_KEYS = 5;
+int adc_key_in;
+int key = -1;
+int oldkey = -1;
+
+int get_key(unsigned int input) {
+  int k;
+  for (k = 0; k < NUM_KEYS; k++) {
+    if (input < adc_key_val[k]) {
+      return k;
+    }
+  }
+  if (k >= NUM_KEYS)k = -1;  // No valid key pressed
+  return k;
+}
+
 void set_led(int state) {
+  switch (state) {
+    case 0:
+      set_rgb(true, false, false);
+      break;
+    case 1:
+      set_rgb(false, true, false);
+      break;
+    case 2:
+      set_rgb(false, false, true);
+      break;
+    default:
+      set_rgb(true, false, false);
+      break;
+  }
+}
+
+void set_rgb(bool r, bool g, bool b) {
+  if (r) {
+    digitalWrite(ledRPin, HIGH);
+  } else {
+    digitalWrite(ledRPin, LOW);
+  }
+  if (g) {
+    digitalWrite(ledGPin, HIGH);
+  } else {
+    digitalWrite(ledGPin, LOW);
+  }
+  if (b) {
+    digitalWrite(ledBPin, HIGH);
+  } else {
+    digitalWrite(ledBPin, LOW);
+  }
 
 }
 
 void setup() {
-  pinMode(outPin, OUTPUT);
+  pinMode(ledRPin, OUTPUT);
+  pinMode(ledGPin, OUTPUT);
+  pinMode(ledBPin, OUTPUT);
   analogReference(INTERNAL); //调用板载1.1V基准源
-  myservo.attach(5);
   Serial.begin(9600);
 }
 
 void loop() {
-  sensorValue = analogRead(sensorPin);
-  float voltageValue = (1.1 * sensorValue) / 1024;//电压
-  if (voltageValue > thresholdVoltageValue) {
-    //吸上了
-    //digitalWrite(outPin, HIGH);
-    //    Serial.print("吸上了\n");
-    sucked = 1;
-  } else {
-    //没有吸上
-    //digitalWrite(outPin, LOW);
-    //    Serial.print("没有吸上\n");
-    sucked = 0;
+  sensorValue = analogRead(keyboardPin);
+  key = get_key(sensorValue);  // convert into key press
+  if (key != oldkey)   // if keypress is detected
+  {
+    delay(100);  // wait for debounce time
+    adc_key_in = analogRead(keyboardPin);    // read the value from the sensor
+    key = get_key(adc_key_in);    // convert into key press
+    if (key != oldkey) {
+      oldkey = key;
+      if (key >= 0) {
+        goal = key;
+      }
+    }
   }
 
   if (serialflag) {
@@ -72,7 +120,7 @@ void loop() {
   outString += stringDwonToUp;
   char temp_str[20];
   //outString += itoa((int)myservo.read() * 10 * 1.0, temp_str, 10);  
-  outString += itoa((int) agv_state, temp_str, 10);
+  outString += itoa((int) sensorValue, temp_str, 10);
   //outString += stringDwonToUp;
   outString += stringSucked;
   outString += itoa((int) goal, temp_str, 10);
