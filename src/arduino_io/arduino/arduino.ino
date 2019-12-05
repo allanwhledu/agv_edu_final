@@ -5,7 +5,7 @@
 
 //ros::NodeHandle  nh;/
 
-int keyboardPin = A1;    // select the input pin for the potentiometer
+int keyboardPin = A0;    // select the input pin for the potentiometer
 int ledRPin = 8;      // select the pin for the LED
 int ledGPin = 9;      // select the pin for the LED
 int ledYPin = 10;      // select the pin for the LED
