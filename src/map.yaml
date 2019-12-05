@@ -1,4 +1,4 @@
-image: /home/null/ros_ws/agv_edu_final/src/map.pgm
+image: map.pgm
 resolution: 0.020000
 origin: [-100.000000, -100.000000, 0.000000]
 negate: 0
