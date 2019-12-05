@@ -35,7 +35,10 @@ int get_key(unsigned int input) {
   int k;
   for (k = 0; k < NUM_KEYS; k++) {
     if (input < adc_key_val[k]) {
-      return k;
+      if(k==4){
+        k=-1;
+      }
+      return k+1;
     }
   }
   if (k >= NUM_KEYS)k = -1;  // No valid key pressed
@@ -123,7 +126,7 @@ void loop() {
   outString += itoa((int) agv_state, temp_str, 10);
   //outString += stringDwonToUp;
   outString += stringSucked;
-  outString += itoa((int) goal+1, temp_str, 10);
+  outString += itoa((int) goal, temp_str, 10);
   outString += stringOver;
   inString = "";
 
