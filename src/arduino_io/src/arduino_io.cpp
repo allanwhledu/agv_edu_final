@@ -99,7 +99,7 @@ int main(int argc, char **argv) {
 // }
 
 // ROS_INFO("success_num_read %d", success_num_read);
-// ROS_INFO("state dtu %d", state);
+// ROS_INFO("state dtu %d", index);
 
       goal_idx_msg.data = index;
       goal_idx_pub.publish(goal_idx_msg);

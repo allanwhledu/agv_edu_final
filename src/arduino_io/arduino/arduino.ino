@@ -8,7 +8,7 @@
 int keyboardPin = A1;    // select the input pin for the potentiometer
 int ledRPin = 8;      // select the pin for the LED
 int ledGPin = 9;      // select the pin for the LED
-int ledBPin = 10;      // select the pin for the LED
+int ledYPin = 10;      // select the pin for the LED
 int sensorValue = 0;  // variable to store the value coming from the sensor
 
 int agv_state = 0;
@@ -45,21 +45,21 @@ int get_key(unsigned int input) {
 void set_led(int state) {
   switch (state) {
     case 0:
-      set_rgb(true, false, false);
+      set_rgy(true, false, false);
       break;
     case 1:
-      set_rgb(false, true, false);
+      set_rgy(false, true, false);
       break;
     case 2:
-      set_rgb(false, false, true);
+      set_rgy(false, false, true);
       break;
     default:
-      set_rgb(true, false, false);
+      set_rgy(true, false, false);
       break;
   }
 }
 
-void set_rgb(bool r, bool g, bool b) {
+void set_rgy(bool r, bool g, bool y) {
   if (r) {
     digitalWrite(ledRPin, HIGH);
   } else {
@@ -70,10 +70,10 @@ void set_rgb(bool r, bool g, bool b) {
   } else {
     digitalWrite(ledGPin, LOW);
   }
-  if (b) {
-    digitalWrite(ledBPin, HIGH);
+  if (y) {
+    digitalWrite(ledYPin, HIGH);
   } else {
-    digitalWrite(ledBPin, LOW);
+    digitalWrite(ledYPin, LOW);
   }
 
 }
@@ -81,7 +81,7 @@ void set_rgb(bool r, bool g, bool b) {
 void setup() {
   pinMode(ledRPin, OUTPUT);
   pinMode(ledGPin, OUTPUT);
-  pinMode(ledBPin, OUTPUT);
+  pinMode(ledYPin, OUTPUT);
   analogReference(INTERNAL); //调用板载1.1V基准源
   Serial.begin(9600);
 }
@@ -91,7 +91,7 @@ void loop() {
   key = get_key(sensorValue);  // convert into key press
   if (key != oldkey)   // if keypress is detected
   {
-    delay(100);  // wait for debounce time
+    delay(50);  // wait for debounce time
     adc_key_in = analogRead(keyboardPin);    // read the value from the sensor
     key = get_key(adc_key_in);    // convert into key press
     if (key != oldkey) {
@@ -123,7 +123,7 @@ void loop() {
   outString += itoa((int) agv_state, temp_str, 10);
   //outString += stringDwonToUp;
   outString += stringSucked;
-  outString += itoa((int) goal, temp_str, 10);
+  outString += itoa((int) goal+1, temp_str, 10);
   outString += stringOver;
   inString = "";
 
