@@ -133,7 +133,7 @@ int main(int argc, char** argv)
         //Send the goal pose to the MoveBaseAction server
         // 这里应该是在请求服务
 
-        ROS_INFO_STREAM('state var: '<<call_movebase<<' '<<goal_changed);
+        ROS_INFO_STREAM(call_movebase<<' '<<goal_changed);
         if(call_movebase == true  && goal_changed == true){
             ac.sendGoal(goal);
             ROS_INFO_STREAM("sending goal!");

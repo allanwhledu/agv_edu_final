@@ -22,3 +22,4 @@ sleep 2
 roslaunch move_forward move_and_avoid_dynamic_object.launch&
 
 sleep 3
+rosrun move_forward get_state_car&
