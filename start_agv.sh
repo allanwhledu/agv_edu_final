@@ -1,5 +1,7 @@
 #!/bin/bash -e
+source /opt/ros/kinetic/setup.bash
 source devel/setup.bash
+echo "123"| sudo -S chmod 777 /dev/ttyUSB0
 sudo chmod 777 /dev/ttyUSB0
 sudo chmod 777 /dev/ttyACM0
 sleep 2
