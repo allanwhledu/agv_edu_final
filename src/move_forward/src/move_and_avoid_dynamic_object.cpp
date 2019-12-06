@@ -74,6 +74,13 @@ int main(int argc, char** argv)
                 ros::param::get("target_pose_th2", target_pose_th);
                 call_movebase = true;
                 break;
+            case 3:
+                ROS_INFO_STREAM("get switch_tar = 3!");
+                ros::param::get("target_pose_x3", target_pose_x);
+                ros::param::get("target_pose_y3", target_pose_y);
+                ros::param::get("target_pose_th3", target_pose_th);
+                call_movebase = true;
+                break;
             default:
                 ROS_INFO_STREAM("can not get switch_tar!");
                 call_movebase = false;
@@ -102,19 +109,17 @@ int main(int argc, char** argv)
             initial_pose_pub.publish(initial_pose);
             ROS_INFO("the robot initial pose");
             initial_time_counter = initial_time_counter + 1;
-            sleep(1);
+
+            // 先连接一个move base是否可用
+            ROS_INFO("check move_base service ...");
+            //Wait 10 seconds for the action server to become available
+            if(!ac.waitForServer(ros::Duration(1)))
+            {
+                ROS_INFO("Can't connected to move base server!");
+            } else
+                ROS_INFO_STREAM("connected to move_base server!");
         }
 
-
-        // 先连接一个move base是否可用
-        ROS_INFO("check move_base service ...");
-        //Wait 10 seconds for the action server to become available
-        if(!ac.waitForServer(ros::Duration(1)))
-        {
-            ROS_INFO("Can't connected to move base server!");
-//            return 1;
-        } else
-            ROS_INFO_STREAM("connected to move_base server!");
 
         //Intialize the waypoint goal
         // 将目标点装入
