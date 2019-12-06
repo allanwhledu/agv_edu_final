@@ -50,4 +50,4 @@ CATKIN_IGNORE
 
 NiTE2/
 
-src/map\.pgm
+#src/map\.pgm
