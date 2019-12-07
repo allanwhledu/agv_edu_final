@@ -2,10 +2,10 @@
 source /opt/ros/kinetic/setup.bash
 source devel/setup.bash
 # echo "123"| sudo -S chmod 777 /dev/ttyUSB0
-sudo chmod 777 /dev/ttyUSB0
-sudo chmod 777 /dev/ttyACM0
-roscore&
-sleep 5
+# sudo chmod 777 /dev/ttyUSB0
+# sudo chmod 777 /dev/ttyACM0
+# roscore&
+# sleep 5
 roslaunch  agv_tcp_velocity laser.launch&
 sleep 1
 roslaunch ira_laser_tools laserscan_multi_merger.launch&
