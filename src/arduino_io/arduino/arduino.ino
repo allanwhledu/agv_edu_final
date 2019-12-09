@@ -1,3 +1,10 @@
+/*
+ * @Date: 2019-12-05 12:55:14
+ * @LastEditTime: 2019-12-09 17:03:44
+ * @LastEditors: Li Xiang
+ * @Description: 
+ * @FilePath: /agv_edu_final/src/arduino_io/arduino/arduino.ino
+ */
 
 #include <string.h>
 #include <Servo.h>    // 声明调用Servo.h库
