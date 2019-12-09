@@ -1,0 +1,20 @@
+<launch>
+  <include file="$(find agv_tcp_velocity)/launch/laser.launch"/>
+  <include file="$(find ira_laser_tools)/launch/laserscan_multi_merger.launch"/>
+  <arg name="map_file" default="$(find agv_tcp_velocity)/map.yaml"/>
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+  <include file="$(find agv_tcp_velocity)/launch/pure_matcher.launch"/>
+  <include file="$(find amcl)/examples/amcl_omni.launch"/>
+  <include file="$(find agv_tcp_velocity)/launch/move_base.launch"/>
+  <node name="soccer_maxon_node" pkg="soccer_maxon" type="soccer_maxon_node"/>
+  <node name="arduino_io" pkg="arduino_io" type="arduino_io"/>
+  
+  <include file="$(find move_forward)/launch/move_and_avoid_dynamic_object.launch"/>
+
+  <node name="get_state_car" pkg="move_forward" type="get_state_car"/>
+
+  <include file="$(find kinova_bringup)/launch/kinova_robot.launch"/>
+  <include file="$(find openni2_tracker)/launch/openni2_tracker.launch"/>
+  <include file="$(find avoid_person_node)/launch/avoid_person_node.launch"/>
+
+</launch>
